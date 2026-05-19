@@ -8,7 +8,9 @@ const app = express();
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || /^http:\/\/localhost(:\d+)?$/.test(origin)) return cb(null, true);
+    if (!origin) return cb(null, true);
+    if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return cb(null, true);
+    if (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) return cb(null, true);
     cb(new Error('Not allowed by CORS'));
   },
   credentials: true,
